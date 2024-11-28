@@ -15,7 +15,7 @@ int main() {
     std::cout << "Type 'help' to get info" << std::endl;
 
     while (true) {
-        std::cout << "\nfigure> ";
+        std::cout << "\ndungeon> ";
         std::string input;
         std::cin >> input;
 

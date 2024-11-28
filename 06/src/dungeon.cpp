@@ -10,14 +10,14 @@ void Dungeon::addNPC(std::shared_ptr<NPC> npc) {
 
 void Dungeon::printNPCs() const {
     for (const auto& npc : npcs) {
-        std::cout << "Type: " << typeid(*npc).name() << ", Name: " << npc->getName() << ", Coordinates: (" << npc->getX() << ", " << npc->getY() << ")" << std::endl;
+        std::cout << "Type: " << npc->getType() << ", Name: " << npc->getName() << ", Coordinates: (" << npc->getX() << ", " << npc->getY() << ")" << std::endl;
     }
 }
 
 void Dungeon::saveToFile(const std::string &filename) const {
     std::ofstream file(filename);
     for (const auto& npc : npcs) {
-        file << typeid(*npc).name() << " " << npc->getName() << " " << npc->getX() << " " << npc->getY() << std::endl;
+        file << npc->getType() << " " << npc->getName() << " " << npc->getX() << " " << npc->getY() << std::endl;
     }
 }
 
