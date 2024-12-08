@@ -2,16 +2,20 @@
 #define VISITOR_H
 
 #include "observer.h"
+#include "npc.h"
+#include "dungeon.h"
+#include "utils.h"
 #include <vector>
 #include <cmath>
-#include "npc.h"
+#include <string>
+#include <memory> 
 
+class Dungeon; 
 
 class Squirrel;
 class Werewolf;
 class Druid;
 class NPC;
-
 
 class Visitor {
 public:
@@ -21,35 +25,24 @@ public:
     virtual ~Visitor() = default; 
 };
 
-
 class BattleVisitor : public Visitor {
 public:
-    BattleVisitor(int distance, Observer& observer)
-        : distance(distance), observer(observer) {}
-
+    BattleVisitor(int distance, Observer& observer, Dungeon& dungeon);
     virtual ~BattleVisitor() override; 
 
-    
     void visit(Squirrel& squirrel) override;
     void visit(Werewolf& werewolf) override;
     void visit(Druid& druid) override;
 
-    
-    void addNPC(NPC* npc) {
-        npcs.push_back(npc);
-    }
+    void addNPC(std::shared_ptr<NPC> npc); 
 
 private:
-    
-    bool isInRange(const NPC& npc1, const NPC& npc2) const {
-        int dx = npc1.getX() - npc2.getX();
-        int dy = npc1.getY() - npc2.getY();
-        return std::sqrt(dx * dx + dy * dy) <= distance;
-    }
+    bool isInRange(const NPC& npc1, const NPC& npc2) const;
 
     int distance;                
     Observer& observer;          
-    std::vector<NPC*> npcs;      
+    Dungeon& dungeon;
+    std::vector<std::shared_ptr<NPC>> npcs;      
 };
 
 #endif 

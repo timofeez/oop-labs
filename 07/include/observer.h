@@ -6,13 +6,11 @@
 #include <fstream>
 #include <mutex>
 
-
 class Observer {
 public:
     virtual void update(const std::string& message) = 0;
     virtual ~Observer() = default;
 };
-
 
 class ConsoleObserver : public Observer {
 public:
@@ -23,7 +21,6 @@ public:
 private:
     static std::mutex coutMutex;
 };
-
 
 class FileObserver : public Observer {
 public:

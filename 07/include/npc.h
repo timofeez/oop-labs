@@ -4,7 +4,9 @@
 #include <string>
 #include <iostream>
 #include <mutex>
+#include "visitor.h" 
 
+class Visitor; 
 
 class NPC {
 public:
@@ -16,7 +18,6 @@ public:
 
     std::string getName() const { return name; }
 
-    
     int getX() const {
         std::lock_guard<std::mutex> lock(posMutex);
         return x;
@@ -30,12 +31,14 @@ public:
     bool isAlive() const { return alive; }
     void setAlive(bool status) { alive = status; }
 
-    
     void setPosition(int newX, int newY) {
         std::lock_guard<std::mutex> lock(posMutex);
         x = newX;
         y = newY;
     }
+
+    
+    virtual void accept(Visitor& visitor) = 0;
 
     friend std::ostream& operator<<(std::ostream& os, const NPC& npc) {
         os << "NPC: " << npc.name << " at (" << npc.x << ", " << npc.y << ")";
@@ -49,25 +52,28 @@ protected:
     mutable std::mutex posMutex; 
 };
 
-
 class Squirrel : public NPC {
 public:
     Squirrel(const std::string& name, int x, int y) : NPC(name, x, y) {}
     std::string getType() const override;
-};
 
+    void accept(Visitor& visitor) override;
+};
 
 class Druid : public NPC {
 public:
     Druid(const std::string& name, int x, int y) : NPC(name, x, y) {}
     std::string getType() const override;
-};
 
+    void accept(Visitor& visitor) override;
+};
 
 class Werewolf : public NPC {
 public:
     Werewolf(const std::string& name, int x, int y) : NPC(name, x, y) {}
     std::string getType() const override;
+
+    void accept(Visitor& visitor) override;
 };
 
 #endif 

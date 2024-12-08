@@ -3,8 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
-
-
+#include "tasks.h"
 
 void Dungeon::addNPC(std::shared_ptr<NPC> npc) {
     std::unique_lock lock(mtx);

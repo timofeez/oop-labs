@@ -1,30 +1,32 @@
 cmake_minimum_required(VERSION 3.10)
-project(6_thread_version)
+project(oop-labs)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Включаем вывод отладочной информации
-set(CMAKE_BUILD_TYPE Debug)
-set(CMAKE_VERBOSE_MAKEFILE ON)
-
-# Добавляем библиотеку NPCs
-add_library(07_npcs
+include_directories(${CMAKE_SOURCE_DIR}/include)
+add_library(npcs
     src/npc.cpp
     src/visitor.cpp
     src/factory.cpp
     src/observer.cpp
+    src/utils.cpp
 )
-target_include_directories(07_npcs PRIVATE include)
+target_include_directories(npcs PUBLIC include)
 
-# Добавляем библиотеку Dungeon
-add_library(07_dungeon
+add_library(dungeon
     src/dungeon.cpp
 )
-target_include_directories(07_dungeon PRIVATE include)
+target_include_directories(dungeon PUBLIC include)
+target_link_libraries(dungeon PUBLIC npcs)
 
-# Добавляем основной исполнимый файл
+add_library(managers
+    src/movement_manager.cpp
+    src/battle_manager.cpp
+)
+target_include_directories(managers PUBLIC include)
+target_link_libraries(managers PUBLIC dungeon npcs)
+
 add_executable(07 main.cpp)
-target_include_directories(07 PRIVATE include)
-target_link_libraries(07 PRIVATE 07_dungeon 07_npcs)
-
+target_include_directories(07 PUBLIC include)
+target_link_libraries(07 PUBLIC dungeon npcs managers)
